@@ -31,12 +31,25 @@ public class BaseDao {
     public String getSql(String tableName){
         // BuildMyString.com generated code. Please enjoy your string responsibly.
 
+//        StringBuilder sb = new StringBuilder();
+//
+//        sb.append("SELECT LISTAGG((case when t.DATA_TYPE = 'DATE' then 'TO_CHAR('||t.column_name||', ''YYYYMMDDHH24MISS'')' else t.column_name end), '|| ''|'' || ') ");
+//        sb.append("         WITHIN GROUP (ORDER BY t.COLUMN_ID) as sql ");
+//        sb.append("from USER_TAB_COLS t ");
+//        sb.append("where t.TABLE_NAME = upper('"+tableName+"') ");
+
+        // BuildMyString.com generated code. Please enjoy your string responsibly.
+
         StringBuilder sb = new StringBuilder();
 
-        sb.append("SELECT LISTAGG((case when t.DATA_TYPE = 'DATE' then 'TO_CHAR('||t.column_name||', ''YYYYMMDDHH24MISS'')' else t.column_name end), '|| ''|'' || ') ");
-        sb.append("         WITHIN GROUP (ORDER BY t.COLUMN_ID) as sql ");
+        sb.append("SELECT LISTAGG((case ");
+        sb.append("                    when t.DATA_TYPE = 'DATE' then 'TO_CHAR(' || t.column_name || ', ''YYYYMMDDHH24MISS'')' ");
+        sb.append("                    when t.COLUMN_ID = 1 then 'TO_CLOB(' || t.column_name || ')' ");
+        sb.append("                    else t.column_name end), '|| ''~'' || ') ");
+        sb.append("               WITHIN GROUP (ORDER BY t.COLUMN_ID) as sql ");
         sb.append("from USER_TAB_COLS t ");
         sb.append("where t.TABLE_NAME = upper('"+tableName+"') ");
+
 
         log.info("sql for getAll : {}", sb.toString());
 

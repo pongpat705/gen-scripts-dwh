@@ -1,5 +1,5 @@
 set pagesize 0;
-set linesize 2000;
+set linesize 20000;
 set trimspool on;
 set feed off;
 set headsep off;
@@ -7,11 +7,14 @@ set time off
 set echo off
 set serveroutput on
 set verify off
+set long 20000;
+set longchunksize 20000;
 /* Generate name of Interface File .................................. */
 col iFile new_value iFile
 select
-       'c:\cvs\DWH\#filename#'
-              || TO_CHAR(TRUNC(SYSDATE), 'YYYY-MM-DD')
+       '&2/'
+              ||#filename#
+              || TO_CHAR(TO_DATE('&1','YYYY-MM-DD')-1, 'YYYY-MM-DD')
               || '_000000.000000.dat' iFile
 from
        dual
@@ -19,16 +22,18 @@ from
 
 spool &iFile
 SELECT
-       #selectstatement#
+       REPLACE((#selectstatement#), CHR(10), ' ')
 FROM
        #tablename#
 WHERE
        (
-              CREATED_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE) + INTERVAL '1' DAY - INTERVAL '1' SECOND
+              CREATED_DATE    >= TRUNC(TO_DATE('&1','YYYY-MM-DD')-1)
+              AND CREATED_DATE < TRUNC(TO_DATE('&1','YYYY-MM-DD')-1) + INTERVAL '1' DAY
        )
        OR
        (
-              UPDATED_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE) + INTERVAL '1' DAY - INTERVAL '1' SECOND
+              UPDATED_DATE    >= TRUNC(TO_DATE('&1','YYYY-MM-DD')-1)
+              AND UPDATED_DATE < TRUNC(TO_DATE('&1','YYYY-MM-DD')-1) + INTERVAL '1' DAY
        )
 ;
 

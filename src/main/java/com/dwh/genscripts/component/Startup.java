@@ -47,8 +47,8 @@ public class Startup {
         try {
             for (String t : tablesName) {
                 File log= new ClassPathResource("template_ctrl.sql").getFile();
-                String sfilename = "'c:\\cvs\\DWH\\#filename#'";
-                String rfilename = "'c:\\cvs\\DWH\\"+t+"_'";
+                String sfilename = "#filename#";
+                String rfilename = "'"+t+"_'";
                 String sTableName = "#tablename#";  // <- changed to work with String.replaceAll()
                 String rTableName = t;
                 FileReader fr = new FileReader(log);
@@ -102,8 +102,8 @@ public class Startup {
         try {
             for (String t : tablesName) {
                 File log= new ClassPathResource("template.sql").getFile();
-                String sfilename = "'c:\\cvs\\DWH\\#filename#'";
-                String rfilename = "'c:\\cvs\\DWH\\"+t+"_'";
+                String sfilename = "#filename#";
+                String rfilename = "'"+t+"_'";
                 String sTableName = "#tablename#";  // <- changed to work with String.replaceAll()
                 String rTableName = t;
                 FileReader fr = new FileReader(log);
